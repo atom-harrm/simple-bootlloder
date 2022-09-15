@@ -1,0 +1,32 @@
+org 0x7c00
+
+boot_sign equ 0xaa55
+mov si,msg
+call printmsg
+jmp $
+
+;let define the printcharacter
+printcharacter:
+mov  ah,0x0e
+mov  bh,0x00
+mov  bl,0x08
+
+;let call the display interupt
+int 0x10
+ret   ;this is to return the  to current procidure
+
+;let define the printmsg function
+printmsg:
+mov al,[si]
+inc si
+or al ,al
+jz done
+call printcharacter
+call printmsg
+done
+ret
+
+msg  db "Hi there am Johnson and it's working" , 0
+times  510-($ - $$) db 0
+
+dw boot_sign
